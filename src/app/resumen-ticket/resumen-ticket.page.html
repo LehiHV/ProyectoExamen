@@ -1,0 +1,70 @@
+<!-- resumen-ticket.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ticket</ion-title>
+    <ion-buttons slot="end">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Resumen-Ticket</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card *ngIf="ticketData">
+    <ion-card-header>
+      Detalles del Ticket
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>ID del Ticket:</ion-label>
+          <ion-text>{{ ticketData.Id }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fecha:</ion-label>
+          <ion-text>{{ ticketData.Fecha }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total:</ion-label>
+          <ion-text>{{ ticketData.Total }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Credito:</ion-label>
+          <ion-text>{{ ticketData.Credito }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pagada:</ion-label>
+          <ion-text>{{ ticketData.Pagada }}</ion-text>
+        </ion-item>
+
+        <!-- Detalles del Ticket -->
+        <ion-item-divider>
+          Detalles del Ticket
+        </ion-item-divider>
+        <ion-item *ngFor="let detalle of ticketData.DetalleTicket">
+        <ion-item>
+          <ion-label>Nombre:</ion-label>
+          <ion-text>{{ detalle.Nombre }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cantidad:</ion-label>
+          <ion-text>{{ detalle.Cantidad }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Precio:</ion-label>
+          <ion-text>{{ detalle.Precio }}</ion-text>
+        </ion-item>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+ <ion-button expand="full" (click)="onListoClick()">Listo</ion-button>
+</ion-content>

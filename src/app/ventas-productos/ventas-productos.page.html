@@ -1,0 +1,56 @@
+<!-- ventas-productos.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Venta de Productos</ion-title>
+    <ion-buttons slot="end">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngIf="Productos && Productos.length > 0">
+    <ion-item-group>
+      <ion-title class="ion-padding ion-text-center">
+        <h3>Cliente Seleccionado:</h3>
+      </ion-title>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img *ngIf="sharedDataService.Fotografia_Cliente_Ventas && esURLValida(clienteFotografia)" [src]="sharedDataService.Fotografia_Cliente_Ventas" alt="Foto">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ clienteNombre }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-title class="ion-padding ion-text-center">
+        <h3>Productos Seleccionados:</h3>
+      </ion-title>
+      <ion-button expand="full" (click)="mostrarDialogoCrearPedido()" *ngIf="hayProductosSeleccionados()">
+        Crear Pedido
+      </ion-button>
+      <ion-searchbar [(ngModel)]="searchText" placeholder="Buscar Producto"></ion-searchbar>
+      <ion-item *ngFor="let productoItem of filterProductos()">
+        <ion-thumbnail slot="start">
+          <img *ngIf="productoItem.Fotografia && esURLValida(productoItem.Fotografia)" [src]="productoItem.Fotografia" style="width: 100px; height: 100px;">
+        </ion-thumbnail>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="product-details">
+              <h2>{{ productoItem.Nombre }}</h2>
+              <p>Descripción: {{ productoItem.Descripcion }}</p>
+              <p>Cantidad: {{ productoItem.Cantidad }}</p>
+              <p>Precio de Venta: {{ productoItem.PrecioVenta }}</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-input placeholder="Cantidad" type="number" [(ngModel)]="productoItem.cantidadSeleccionada" min="1" [max]="productoItem.Cantidad" [disabled]="!productoItem.seleccionado"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-checkbox slot="end" [(ngModel)]="productoItem.seleccionado"></ion-checkbox>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

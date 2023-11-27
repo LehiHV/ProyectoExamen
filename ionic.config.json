@@ -1,0 +1,7 @@
+{
+  "name": "ProyectoExamen",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

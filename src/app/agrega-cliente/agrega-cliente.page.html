@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Agrega-Cliente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Agrega Cliente</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- Formulario para agregar cliente -->
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Nombre" type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Domicilio</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Domicilio" type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Correo</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Correo" type="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Telefono</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Telefono" type="tel"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Fotografia</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Fotografia" type="text"></ion-input>
+    <!-- Muestra la URL de la fotografía si es válida -->
+    <ion-text *ngIf="esURLValida(nuevoCliente.Fotografia)">
+      Fotografía: {{ nuevoCliente.Fotografia }}
+    </ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Periodo Cobrar</ion-label>
+    <ion-select [(ngModel)]="nuevoCliente.PeriodoCobrar" (ionChange)="periodoCobrarChanged(nuevoCliente)">
+      <ion-select-option value="semanal">Semanal</ion-select-option>
+      <ion-select-option value="quincenal">Quincenal</ion-select-option>
+      <ion-select-option value="mensual">Mensual</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Día Cobrar</ion-label>
+    <ion-select [(ngModel)]="nuevoCliente.DiaCobrar">
+      <ion-select-option *ngFor="let opcion of nuevoCliente.opcionesDiaCobrar" [value]="opcion">{{ opcion }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Hora Cobrar</ion-label>
+    <ion-select [(ngModel)]="nuevoCliente.HoraCobrar">
+      <ion-select-option value="6:00 AM">6:00 AM</ion-select-option>
+      <ion-select-option value="12:00 PM">12:00 PM</ion-select-option>
+      <ion-select-option value="6:00 PM">6:00 PM</ion-select-option>
+      <ion-select-option value="11:00 PM">11:00 PM</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-button color="primary" (click)="cancelarAgregarCliente()">Cancelar</ion-button>
+    <ion-button color="success" (click)="registrarCliente()">Registrar</ion-button>
+  </ion-item>
+</ion-content>

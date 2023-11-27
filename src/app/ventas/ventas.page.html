@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ventas</ion-title>
+    <ion-buttons slot="end"></ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-title class="ion-padding ion-text-center">
+    <h1>Seleccionar un Cliente:</h1>
+  </ion-title>
+
+  <!-- Barra de búsqueda -->
+  <ion-searchbar [(ngModel)]="searchText" placeholder="Buscar cliente"></ion-searchbar>
+
+  <ion-list *ngIf="Clientes && Clientes.length > 0">
+    <ion-item-group *ngFor="let clienteItem of filterClientes()">
+      <ion-item (click)="verProductos(clienteItem)">
+        <ion-avatar slot="start">
+          <img *ngIf="clienteItem.Fotografia && esURLValida(clienteItem.Fotografia)" [src]="clienteItem.Fotografia" alt="Foto">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ clienteItem.Nombre }}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

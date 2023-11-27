@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Mostrar el logo de la tienda si es una URL válida -->
+    <ion-thumbnail slot="start" *ngIf="isValidUrl(logo)">
+      <ion-img [src]="logo"></ion-img>
+    </ion-thumbnail>
+
+    <!-- Mostrar el nombre de la tienda -->
+    <ion-title>{{ nombreTienda }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmarSalir()">
+        <ion-icon name="exit"></ion-icon>
+        <ion-label>Salir</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Tu contenido actual -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="irClientes()" class="custom-button">
+          <ion-icon name="people"></ion-icon>
+          <ion-label>Clientes</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="irProductos()" class="custom-button">
+          <ion-icon name="cube"></ion-icon>
+          <ion-label>Productos</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="irVender()" class="custom-button">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Vender</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="irReportes()" class="custom-button">
+          <ion-icon name="document-text"></ion-icon>
+          <ion-label>Reportes</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

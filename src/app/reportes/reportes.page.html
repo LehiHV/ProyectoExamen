@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reportes</ion-title>
+    <ion-buttons slot="end">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Reportes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <!-- Campo de entrada de texto clickeable para Fecha de Inicio -->
+  <ion-item (click)="toggleDatepicker('start')">
+    <ion-label>Fecha de Inicio:</ion-label>
+    <ion-input [(ngModel)]="displayStartDate" readonly="true"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="showStartDatepicker">
+    <ion-datetime 
+      displayFormat="YYYY-MM-DD"
+      [(ngModel)]="startDate"
+      (ionChange)="onDateSelected('start')"
+    ></ion-datetime>
+  </ion-item>
+  
+  <!-- Campo de entrada de texto clickeable para Fecha Final -->
+  <ion-item (click)="toggleDatepicker('end')">
+    <ion-label>Fecha Final:</ion-label>
+    <ion-input [(ngModel)]="displayEndDate" readonly="true"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="showEndDatepicker">
+    <ion-datetime 
+      displayFormat="YYYY-MM-DD"
+      [(ngModel)]="endDate"
+      (ionChange)="onDateSelected('end')"
+    ></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-button (click)="redirigirAReportesGenerados()">
+        GENERAR REPORTE
+    </ion-button>
+</ion-item>
+
+</ion-content>
+
+

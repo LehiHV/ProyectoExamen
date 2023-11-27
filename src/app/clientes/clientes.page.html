@@ -1,0 +1,104 @@
+<!-- clientes.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Clientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="agregarCliente()">
+        <ion-icon name="add"></ion-icon> Agregar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <ion-searchbar [(ngModel)]="searchText" placeholder="Buscar cliente"></ion-searchbar>
+  <ion-list *ngIf="Clientes && Clientes.length > 0">
+    <ion-item-group *ngFor="let clienteItem of filterClientes()">
+      <ion-item (click)="toggleDetails(clienteItem)">
+        <ion-avatar slot="start">
+          <img *ngIf="clienteItem.Fotografia && esURLValida(clienteItem.Fotografia)" [src]="clienteItem.Fotografia" alt="Foto">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ clienteItem.Nombre }}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="showDetails[clienteItem.Id]">
+        <ion-label>ID: {{ clienteItem.Id }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Telefono: {{ clienteItem.Telefono }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Correo: {{ clienteItem.Correo }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Domicilio: {{ clienteItem.Domicilio }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Periodo Cobrar: {{ clienteItem.PeriodoCobrar }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Dia Cobrar: {{ clienteItem.DiaCobrar }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && !editingClient[clienteItem.Id]">
+        <ion-label>Hora Cobrar: {{ clienteItem.HoraCobrar }}</ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="clienteItem.Nombre" type="text" maxlength="255"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Telefono</ion-label>
+        <ion-input [(ngModel)]="clienteItem.Telefono" type="number" maxlength="9"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input [(ngModel)]="clienteItem.Correo" type="email" maxlength="199"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Domicilio</ion-label>
+        <ion-input [(ngModel)]="clienteItem.Domicilio" type="text" maxlength="199"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Periodo Cobrar</ion-label>
+        <ion-select [(ngModel)]="clienteItem.PeriodoCobrar" (ionChange)="periodoCobrarChanged(clienteItem)">
+          <ion-select-option value="semanal">Semanal</ion-select-option>
+          <ion-select-option value="quincenal">Quincenal</ion-select-option>
+          <ion-select-option value="mensual">Mensual</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Día Cobrar</ion-label>
+        <ion-select [(ngModel)]="clienteItem.DiaCobrar">
+          <ion-select-option *ngFor="let opcion of clienteItem.opcionesDiaCobrar" [value]="opcion">{{ opcion }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Hora Cobrar</ion-label>
+        <ion-select [(ngModel)]="clienteItem.HoraCobrar">
+          <ion-select-option value="6:00 AM">6:00 AM</ion-select-option>
+          <ion-select-option value="12:00 PM">12:00 PM</ion-select-option>
+          <ion-select-option value="6:00 PM">6:00 PM</ion-select-option>
+          <ion-select-option value="11:00 PM">11:00 PM</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showDetails[clienteItem.Id] && editingClient[clienteItem.Id]">
+        <ion-label position="floating">Fotografía (URL)</ion-label>
+        <ion-input [(ngModel)]="clienteItem.Fotografia" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="showDetails[clienteItem.Id]">
+        <ion-button color="primary" (click)="editarCliente(clienteItem)" *ngIf="!editingClient[clienteItem.Id]">Editar</ion-button>
+        <ion-button color="danger" (click)="eliminarCliente(clienteItem)" *ngIf="!editingClient[clienteItem.Id]">Eliminar</ion-button>
+        <ion-button color="success" (click)="guardarCliente(clienteItem)" *ngIf="editingClient[clienteItem.Id]">Guardar</ion-button>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
