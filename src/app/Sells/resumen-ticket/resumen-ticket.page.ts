@@ -3,7 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ModalController, NavController } from '@ionic/angular';
-import { SharedDataService } from '../shared-data.service';
+import { SharedDataService } from '../../shared-data.service';
 
 @Component({
   selector: 'app-resumen-ticket',

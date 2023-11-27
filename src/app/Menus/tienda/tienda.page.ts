@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import { ModalController, NavController } from '@ionic/angular';
-import { SharedDataService } from '../shared-data.service';
+import { SharedDataService } from '../../shared-data.service';
 @Component({
   selector: 'app-tienda',
   templateUrl: './tienda.page.html',
