@@ -7,13 +7,13 @@
 <ion-content>
   <ion-item>
     <ion-label position="stacked">Usuario</ion-label>
-    <ion-input [(ngModel)]="usuario" maxlength="255"></ion-input>
+    <ion-input [(ngModel)]="usuario" maxlength="256"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Constraseña</ion-label>
-    <ion-input type="password" [(ngModel)]="contrasena" maxlength="9"></ion-input>
+    <ion-input type="password" [(ngModel)]="contrasena" maxlength="8"></ion-input>
   </ion-item>
-  <ion-button expand="block"  (click)="entrar()">Entrar</ion-button>
+  <ion-button expand="block"  (click)="GotoShop()">Entrar</ion-button>
 
-  <ion-button expand="block" color="success" (click)="irPagina2()">Registrarse</ion-button>
+  <ion-button expand="block" color="success" (click)="GotoRegister()">Registrarse</ion-button>
 </ion-content>

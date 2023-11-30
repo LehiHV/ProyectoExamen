@@ -22,17 +22,12 @@ export class ProductosPage implements OnInit {
     private http: HttpClient,
     public navCtrl: NavController
   ) {
-    this.obtenerProductos();
   }
 
   ngOnInit() {
     this.obtenerProductos();
   }
 
-  esURLValida(url: string): boolean {
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    return urlPattern.test(url);
-  }
 
   obtenerProductos() {
     this.sharedDataService.obtenerProductos().subscribe(
@@ -45,18 +40,9 @@ export class ProductosPage implements OnInit {
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al obtener la lista de productos.');
+        this.sharedDataService.alert('Error en la llamada HTTP',"Porfavor de contactar al Servicio Tecnico", 'Ocurrió un error al obtener la lista de productos.');
       }
     );
-  }
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
   }
 
   ionViewDidEnter() {
@@ -67,21 +53,16 @@ export class ProductosPage implements OnInit {
     this.showDetails[producto.Id] = !this.showDetails[producto.Id];
   }
 
-  editarProducto(producto: any) {
+  edit(producto: any) {
     this.editingProduct[producto.Id] = true;
   }
-  filterProductos(): any[] {
-    if (!this.searchText) {
-      return this.Productos;
-    }
-
-    return this.Productos.filter(producto => {
-      // Puedes ajustar esta lógica de búsqueda según tus necesidades
-      return producto.Nombre.toLowerCase().includes(this.searchText.toLowerCase());
+  AddProduct() {
+    this.navCtrl.navigateForward('/agrega-producto').then(() => {
+      this.elim.dismiss();
     });
   }
 
-  guardarProducto(producto: any) {
+  save(producto: any) {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_PRODUCTOS.php'; // Reemplaza con la URL correcta
     const params = {
       comando: 'Update',
@@ -99,24 +80,24 @@ export class ProductosPage implements OnInit {
       (response) => {
         if (response) {
           if (response.message === 'Producto actualizado correctamente') {
-            this.mostrarAlerta('Productos', response.message);
+            this.sharedDataService.alert('Actualizar Producto',"Productos Actualizados" ,response.message);
             this.obtenerProductos();
             this.editingProduct[producto.Id] = false;
           } else {
-            this.mostrarAlerta('Productos', response.message);
+            this.sharedDataService.alert('Actualizar Producto',"Error al momento de Actualizar" ,response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error Actualizar Producto',"Error en el Servidor", 'Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar actualizar el producto.');
+        this.sharedDataService.alert('Error Actualizar Producto',"Error al momento de Actualizar", 'Ocurrió un error al intentar actualizar el producto.');
       }
     );
   }
 
-  eliminarProducto(producto: any) {
+  delete(producto: any) {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_PRODUCTOS.php'; // Reemplaza con la URL correcta
     const params = {
       comando: 'Delete',
@@ -130,29 +111,25 @@ export class ProductosPage implements OnInit {
             const index = this.Productos.findIndex(p => p.Id === producto.Id);
             if (index !== -1) {
               this.Productos.splice(index, 1);
-              this.mostrarAlerta('Productos', 'Producto Eliminado correctamente.');
+              this.sharedDataService.alert('Eliminar Producto',"Producto Eliminado" ,'Producto Eliminado correctamente.');
             } else {
-              this.mostrarAlerta('Error', 'No se encontró el producto para eliminar.');
+              this.sharedDataService.alert('Error Eliminar Producto',"Producto Eliminado", 'No se encontró el producto para eliminar.');
             }
           } else {
-            this.mostrarAlerta('Productos', response.message);
+            this.sharedDataService.alert('Eliminar Producto',"Producto no Eliminado", response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error Eliminar Producto',"Producto no Eliminado" ,'Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar eliminar el producto.');
+        this.sharedDataService.alert('Error Eliminar Producto',"Porfavor Contactar con Servicio Tecnico", 'Ocurrió un error al intentar eliminar el producto.');
       }
     );
   }
 
-  agregarProducto() {
-    this.navCtrl.navigateForward('/agrega-producto').then(() => {
-      this.elim.dismiss();
-    });
-  }
+  
 
   
 }

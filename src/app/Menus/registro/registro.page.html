@@ -9,21 +9,21 @@
 <ion-content>
   <ion-item>
     <ion-label position="stacked">Usuario</ion-label>
-    <ion-input [(ngModel)]="usuario" maxlength="255"></ion-input>
+    <ion-input [(ngModel)]="usuario" maxlength="256"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Contraseña</ion-label>
-    <ion-input type="password" [(ngModel)]="contrasena" maxlength="9"></ion-input>
+    <ion-input type="password" [(ngModel)]="contrasena" maxlength="8"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Nombre de Tienda</ion-label>
-    <ion-input [(ngModel)]="nombreTienda" maxlength="255"></ion-input>
+    <ion-input [(ngModel)]="nombreTienda" maxlength="256"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Logo</ion-label>
-    <ion-input [(ngModel)]="logo" maxlength="279"></ion-input>
-    <ion-img *ngIf="logo && isValidUrl(logo)" [src]="logo" alt="Logo Preview"></ion-img>
+    <ion-input [(ngModel)]="logo" maxlength="280"></ion-input>
+    <ion-img *ngIf="logo && sharedDataService.isValidUrl(logo)" [src]="logo" alt="Logo Preview"></ion-img>
   </ion-item>
-  <ion-button expand="block" color="success" (click)="registrar()">Registrarse</ion-button>
-  <ion-button expand="block" (click)="irPagina1()">Iniciar sesión</ion-button>
+  <ion-button expand="block" color="success" (click)="GotoLogin()">Registrarse</ion-button>
+  <ion-button expand="block" (click)="GotoLogin()">Iniciar sesión</ion-button>
 </ion-content>

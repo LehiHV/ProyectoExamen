@@ -1,5 +1,6 @@
   import { Component } from '@angular/core';
   import { NavController, AlertController } from '@ionic/angular';
+  import { SharedDataService } from '../../shared-data.service';
   import { HttpClient } from '@angular/common/http';
 
   @Component({
@@ -17,18 +18,16 @@
     constructor(
       public navCtrl: NavController,
       public alertController: AlertController,
+      public sharedDataService: SharedDataService,
       private http: HttpClient
     ) { }
 
-    irPagina1() {
+    GotoLogin() {
       this.navCtrl.navigateForward('/login');
     }
-    isValidUrl(url: string): boolean {
-      const urlPattern = /^https?:\/\/.+\..+/i;
-      return urlPattern.test(url);
-    }
+    
 
-    registrar() {
+    Register() {
       if (this.usuario && this.contrasena && this.nombreTienda && this.logo) {
         // Realizar la llamada HTTP para registrar al usuario
         const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_USUARIOS.php'; // Reemplaza con tu URL de registro
@@ -46,30 +45,19 @@
             if (response.message === 'Usuario agregado correctamente') {
               // Registro exitoso, puedes redirigir a la página de inicio de sesión u otra página
               this.navCtrl.navigateForward('/login');
-              this.mostrarAlerta('Registro', response.message);
+              this.sharedDataService.alert('Registro',"Registro Exitoso", response.message);
             } else {
               // Mensaje de error del servidor
-              this.mostrarAlerta('Registro', response.message);
+              this.sharedDataService.alert('Registro',"Error al Registrar" ,response.message);
             }
           },
           (error) => {
             console.error('Error en la llamada HTTP:', error);
-            this.mostrarAlerta('Error', 'Ocurrió un error al intentar registrar.');
+            this.sharedDataService.alert('Registro',"Error en el Servidor" ,'Ocurrió un error al intentar registrar.');
           }
         );
       } else {
-        this.mostrarAlerta('Alerta', 'Por favor, complete todos los campos.');
+        this.sharedDataService.alert('Registro',"Porfavor de completar los datos" ,'Por favor, complete todos los campos.');
       }
-    }
-
-    async mostrarAlerta(header: string, message: string) {
-      const alert = await this.alertController.create({
-        header: header,
-        subHeader: 'Registro',
-        message: message,
-        buttons: ['OK']
-      });
-
-      await alert.present();
     }
   }

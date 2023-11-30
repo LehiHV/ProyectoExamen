@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ModalController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { SharedDataService } from '../../shared-data.service';
@@ -15,18 +14,17 @@ export class LoginPage implements OnInit {
 
   constructor(
     public loginCtrl: ModalController,
-    public alertController: AlertController,
     public navCtrl: NavController,
     private sharedDataService: SharedDataService,
     private http: HttpClient // Agregamos el servicio HttpClient
   ) {}
 
-  irPagina2() {
+  GotoRegister() {
     this.navCtrl.navigateForward('/registro');
     this.loginCtrl.dismiss();
   }
 
-  async entrar() {
+  async GotoShop() {
     if (this.usuario && this.contrasena) {
       // Realizar la llamada HTTP
       const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_USUARIOS.php';
@@ -43,7 +41,7 @@ export class LoginPage implements OnInit {
             const { Id, Nombre, Contrasena, Nombre_Tienda, Logo, Clientes } = response;
 
             if (Id && Nombre && Contrasena && Nombre_Tienda && Logo) {
-              this.mostrarAlerta('Inicio de sesión', 'Usuario encontrado');
+              this.sharedDataService.alert('Inicio de sesión','Acceso Concedido', 'Usuario encontrado');
 
               // Almacenar datos en el servicio
               this.sharedDataService.userData = {
@@ -58,10 +56,10 @@ export class LoginPage implements OnInit {
               this.navCtrl.navigateForward('/tienda');
               this.loginCtrl.dismiss();
             } else {
-              this.mostrarAlerta('Inicio de sesión', 'Respuesta del servidor incompleta');
+              this.sharedDataService.alert('Inicio de sesión','Problemas con el Servidor' ,'Respuesta del servidor incompleta');
             }
           } else {
-            this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+            this.sharedDataService.alert('Error del Servidor',"Error" ,'Respuesta vacía del servidor');
           }
         },
         (error) => {
@@ -69,27 +67,13 @@ export class LoginPage implements OnInit {
           console.error('Error en la llamada HTTP:', error);
 
           // Mostrar alerta de error
-          this.mostrarAlerta('Error', 'Ocurrió un error al intentar iniciar sesión.');
+          this.sharedDataService.alert('Error en la llamada HTTP',"Porfavor contactar con el servicio tecnico" ,'Ocurrió un error al intentar iniciar sesión.');
         }
       );
     } else {
       // Mostrar alerta si faltan usuario o contraseña
-      this.mostrarAlerta('Alerta', 'Por favor, ingrese usuario y contraseña.');
+      this.sharedDataService.alert('Falta de Parametros', 'Atencion' ,'Por favor, ingrese usuario y contraseña.');
     }
-  }
-  
-  
-  
-
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      subHeader: 'Inicio de sesión',
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
   }
 
   ngOnInit() {}

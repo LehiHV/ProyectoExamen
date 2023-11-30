@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Productos</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="agregarProducto()">
+      <ion-button (click)="AddProduct()">
         <ion-icon name="add"></ion-icon> Agregar
       </ion-button>
     </ion-buttons>
@@ -15,10 +15,10 @@
 <ion-content [fullscreen]="true">
   <ion-searchbar [(ngModel)]="searchText" placeholder="Buscar Producto"></ion-searchbar>
   <ion-list *ngIf="Productos && Productos.length > 0">
-    <ion-item-group *ngFor="let productoItem of filterProductos()">
+    <ion-item-group *ngFor="let productoItem of sharedDataService.filter(this.Productos,this.searchText)">
       <ion-item (click)="toggleDetails(productoItem)">
         <ion-avatar slot="start">
-          <img *ngIf="productoItem.Fotografia && esURLValida(productoItem.Fotografia)" [src]="productoItem.Fotografia" alt="Foto">
+          <img *ngIf="productoItem.Fotografia && sharedDataService.isValidUrl(productoItem.Fotografia)" [src]="productoItem.Fotografia" alt="Foto">
         </ion-avatar>
         <ion-label>
           <h2>{{ productoItem.Nombre }}</h2>
@@ -43,22 +43,22 @@
 
       <ion-item *ngIf="showDetails[productoItem.Id] && !editingProduct[productoItem.Id]">
         <ion-label>Fotografía</ion-label>
-        <div *ngIf="productoItem.Fotografia && esURLValida(productoItem.Fotografia)">
+        <div *ngIf="productoItem.Fotografia && sharedDataService.isValidUrl(productoItem.Fotografia)">
           <img [src]="productoItem.Fotografia" alt="Foto" style="width: 100%; height: auto;">
         </div>
       </ion-item>
 
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label position="floating">Nombre</ion-label>
-        <ion-input [(ngModel)]="productoItem.Nombre" type="text" maxlength="199"></ion-input>
+        <ion-input [(ngModel)]="productoItem.Nombre" type="text" maxlength="200"></ion-input>
       </ion-item>
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label position="floating">Descripción</ion-label>
-        <ion-input [(ngModel)]="productoItem.Descripcion" type="text" maxlength="249"></ion-input>
+        <ion-input [(ngModel)]="productoItem.Descripcion" type="text" maxlength="250"></ion-input>
       </ion-item>
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label position="floating">Cantidad</ion-label>
-        <ion-input [(ngModel)]="productoItem.Cantidad" type="number" maxlength="10"></ion-input>
+        <ion-input [(ngModel)]="productoItem.Cantidad" type="number" maxlength="11"></ion-input>
       </ion-item>
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label position="floating">Precio de Costo</ion-label>
@@ -71,20 +71,20 @@
 
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label>Fotografía (URL)</ion-label>
-        <ion-input [(ngModel)]="productoItem.Fotografia" type="text" maxlength="499"></ion-input>
+        <ion-input [(ngModel)]="productoItem.Fotografia" type="text" maxlength="500"></ion-input>
       </ion-item>
 
       <ion-item *ngIf="showDetails[productoItem.Id] && editingProduct[productoItem.Id]">
         <ion-label>Fotografía</ion-label>
-        <div *ngIf="productoItem.Fotografia && esURLValida(productoItem.Fotografia)">
+        <div *ngIf="productoItem.Fotografia && sharedDataService.isValidUrl(productoItem.Fotografia)">
           <img [src]="productoItem.Fotografia" alt="Foto" style="width: 100%; height: auto;">
         </div>
       </ion-item>
 
       <ion-item *ngIf="showDetails[productoItem.Id]">
-        <ion-button color="primary" (click)="editarProducto(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Editar</ion-button>
-        <ion-button color="danger" (click)="eliminarProducto(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Eliminar</ion-button>
-        <ion-button color="success" (click)="guardarProducto(productoItem)" *ngIf="editingProduct[productoItem.Id]">Guardar</ion-button>
+        <ion-button color="primary" (click)="edit(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Editar</ion-button>
+        <ion-button color="danger" (click)="delete(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Eliminar</ion-button>
+        <ion-button color="success" (click)="save(productoItem)" *ngIf="editingProduct[productoItem.Id]">Guardar</ion-button>
       </ion-item>
     </ion-item-group>
   </ion-list>

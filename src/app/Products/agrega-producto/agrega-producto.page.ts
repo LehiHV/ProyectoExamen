@@ -30,8 +30,8 @@ export class AgregaProductoPage implements OnInit {
 
   ngOnInit() {}
 
-  registrarProducto() {
-    const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_PRODUCTOS.php?'; // Reemplaza con la URL correcta
+  Register() {
+    const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_PRODUCTOS.php'; // Reemplaza con la URL correcta
     const params = {
       comando: 'Add',
       Nombre: this.nuevoProducto.Nombre,
@@ -47,28 +47,23 @@ export class AgregaProductoPage implements OnInit {
       (response) => {
         if (response) {
           if (response.message === 'Producto agregado correctamente') {
-            this.mostrarAlerta('Productos', 'Producto Registrado');
+            this.sharedDataService.alert('Agregar Productos','Producto Registrado Exitosamente' ,'Producto Registrado');
             this.navCtrl.navigateBack('/productos');
           } else {
-            this.mostrarAlerta('Productos', response.message);
+            this.sharedDataService.alert('Agregar Productos','No se pudo agregar el producto' ,response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error Agregar Producto','Error al momento de agregar un producto' ,'Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar agregar el producto.');
+        this.sharedDataService.alert('Error Agregar Producto', 'Error en el servidor' ,'Ocurrió un error al intentar agregar el producto.');
       }
     );
   }
 
-  esURLValida(url: string): boolean {
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    return urlPattern.test(url);
-  }
-
-  cancelarAgregarProducto() {
+  Cancel() {
     this.nuevoProducto = {
       Nombre: '',
       Descripcion: '',
@@ -92,18 +87,8 @@ export class AgregaProductoPage implements OnInit {
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al obtener la lista de productos.');
+        this.sharedDataService.alert('Error en la llamada HTTP', 'Porfavor Contactar al Servicio Tecnico','Ocurrió un error al obtener la lista de productos.');
       }
     );
-  }
-
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
   }
 }
