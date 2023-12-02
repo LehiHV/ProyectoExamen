@@ -19,7 +19,7 @@ export class TiendaPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private navCtrl: NavController,
-    private sharedDataService : SharedDataService,
+    public sharedDataService : SharedDataService,
     private close : ModalController
     ) {}
     ionViewWillEnter() {
@@ -35,7 +35,7 @@ export class TiendaPage implements OnInit {
       this.logo = userData.Logo;
     }
 
-  confirmarSalir() {
+  exit() {
     this.presentarAlerta();
   }
   ngOnInit() {
@@ -46,16 +46,6 @@ export class TiendaPage implements OnInit {
     this.contrasena = this.sharedDataService.userData.Contrasena;
     this.nombreTienda = this.sharedDataService.userData.Nombre_Tienda;
     this.logo = this.sharedDataService.userData.Logo;
-  }
-
-  isValidUrl(str: string): boolean {
-    // Verificar si la cadena es una URL válida
-    try {
-      new URL(str);
-      return true;
-    } catch (error) {
-      return false;
-    }
   }
 
   async presentarAlerta() {

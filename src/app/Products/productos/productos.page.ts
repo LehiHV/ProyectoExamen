@@ -25,11 +25,11 @@ export class ProductosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.obtenerProductos();
+    this.ShowProducts();
   }
 
 
-  obtenerProductos() {
+  ShowProducts() {
     this.sharedDataService.obtenerProductos().subscribe(
       (productos) => {
         if (productos && productos.length > 0) {
@@ -46,7 +46,7 @@ export class ProductosPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.obtenerProductos();
+    this.ShowProducts();
   }
 
   toggleDetails(producto: any) {
@@ -81,7 +81,7 @@ export class ProductosPage implements OnInit {
         if (response) {
           if (response.message === 'Producto actualizado correctamente') {
             this.sharedDataService.alert('Actualizar Producto',"Productos Actualizados" ,response.message);
-            this.obtenerProductos();
+            this.ShowProducts();
             this.editingProduct[producto.Id] = false;
           } else {
             this.sharedDataService.alert('Actualizar Producto',"Error al momento de Actualizar" ,response.message);
@@ -128,8 +128,30 @@ export class ProductosPage implements OnInit {
       }
     );
   }
-
+  cancel(producto: any) {
+    this.editingProduct[producto.Id] = false;
+  }
   
+  async delete_alert(producto: any) {
+    const alert = await this.alertController.create({
+      header: 'Eliminar Producto',
+      message: '¿Está seguro de eliminar este Producto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.delete(producto)
+          },
+        },
+      ],
+    });
 
+    await alert.present();
+  }
   
 }

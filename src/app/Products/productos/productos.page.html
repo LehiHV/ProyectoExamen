@@ -83,8 +83,9 @@
 
       <ion-item *ngIf="showDetails[productoItem.Id]">
         <ion-button color="primary" (click)="edit(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Editar</ion-button>
-        <ion-button color="danger" (click)="delete(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Eliminar</ion-button>
+        <ion-button color="danger" (click)="delete_alert(productoItem)" *ngIf="!editingProduct[productoItem.Id]">Eliminar</ion-button>
         <ion-button color="success" (click)="save(productoItem)" *ngIf="editingProduct[productoItem.Id]">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancel(productoItem)" *ngIf="editingProduct[productoItem.Id]">Cancelar</ion-button>
       </ion-item>
     </ion-item-group>
   </ion-list>

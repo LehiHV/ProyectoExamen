@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <!-- Mostrar el logo de la tienda si es una URL válida -->
-    <ion-thumbnail slot="start" *ngIf="isValidUrl(logo)">
+    <ion-thumbnail slot="start" *ngIf="sharedDataService.isValidUrl(logo)">
       <ion-img [src]="logo"></ion-img>
     </ion-thumbnail>
 
@@ -9,7 +9,7 @@
     <ion-title>{{ nombreTienda }}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="confirmarSalir()">
+      <ion-button (click)="exit()">
         <ion-icon name="exit"></ion-icon>
         <ion-label>Salir</ion-label>
       </ion-button>

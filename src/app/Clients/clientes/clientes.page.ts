@@ -21,38 +21,14 @@ export class ClientesPage implements OnInit {
     private http: HttpClient,
     public navCtrl: NavController
   ) {
-    this.obtenerClientes();
+    this.showClients();
   }
 
   ngOnInit() {
-    this.obtenerClientes();
-  }
-  filterClientes(): any[] {
-    if (!this.searchText) {
-      return this.Clientes;
-    }
-
-    return this.Clientes.filter(cliente => {
-      // Puedes ajustar esta lógica de búsqueda según tus necesidades
-      return cliente.Nombre.toLowerCase().includes(this.searchText.toLowerCase());
-    });
-  }
-  esURLValida(url: string): boolean {
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    return urlPattern.test(url);
-  }
-  
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
+    this.showClients();
   }
 
-  obtenerClientes() {
+  showClients() {
     this.sharedDataService.obtenerClientes().subscribe(
       (clientes) => {
         if (clientes && clientes.length > 0) {
@@ -63,14 +39,14 @@ export class ClientesPage implements OnInit {
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al obtener la lista de clientes.');
+        this.sharedDataService.alert('Error al mostrar los Clientes', 'Porfavor de contactar al servicio tecnico' ,'Ocurrió un error al obtener la lista de clientes.');
       }
     );
   }
 
   ionViewDidEnter() {
     // Este método se ejecutará cada vez que la página entre en la vista
-    this.obtenerClientes();
+    this.showClients();
   }
 
   periodoCobrarChanged(cliente: any) {
@@ -97,11 +73,11 @@ export class ClientesPage implements OnInit {
     this.showDetails[cliente.Id] = !this.showDetails[cliente.Id];
   }
 
-  editarCliente(cliente: any) {
+  edit(cliente: any) {
     this.editingClient[cliente.Id] = true;
   }
 
-  guardarCliente(cliente: any) {
+  save(cliente: any) {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_CLIENTES.php';
     const params = {
       comando: 'Update',
@@ -121,24 +97,24 @@ export class ClientesPage implements OnInit {
       (response) => {
         if (response) {
           if (response.message === 'Cliente actualizado correctamente') {
-            this.mostrarAlerta('Clientes', response.message);
-            this.obtenerClientes();
+            this.sharedDataService.alert('Actualizar Cliente', 'Cliente Actualizado' ,response.message);
+            this.showClients();
             this.editingClient[cliente.Id] = false;
           } else {
-            this.mostrarAlerta('Clientes', response.message);
+            this.sharedDataService.alert('Actualizar Cliente', 'Error al Actualizar al Cliente' ,response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error al Actualizar Cliente', 'Porfavor de rellenar todos los campos' ,'Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar eliminar al cliente.');
+        this.sharedDataService.alert('Error al Actualizar Cliente', 'Porfavor contactar con el servicio tecnico' ,'Ocurrió un error al intentar eliminar al cliente.');
       }
     );
   }
 
-  eliminarCliente(cliente: any) {
+  delete(cliente: any) {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_CLIENTES.php';
     const params = {
       comando: 'Delete',
@@ -152,25 +128,48 @@ export class ClientesPage implements OnInit {
             const index = this.Clientes.findIndex(c => c.Id === cliente.Id);
             if (index !== -1) {
               this.Clientes.splice(index, 1);
-              this.mostrarAlerta('Clientes', 'Cliente eliminado correctamente.');
+              this.sharedDataService.alert('Eliminar Cliente', 'Cliente Eliminado' ,'Cliente eliminado correctamente.');
             } else {
-              this.mostrarAlerta('Error', 'No se encontró el cliente para eliminar.');
+              this.sharedDataService.alert('Error al Eliminar Cliente', 'Error al Eliminar Cliente' ,'No se encontró el cliente para eliminar.');
             }
           } else {
-            this.mostrarAlerta('Clientes', response.message);
+            this.sharedDataService.alert('Error al Eliminar Cliente', 'Porfavor de completar todos los campos del formulario' ,response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error al Eliminar Cliente', 'Porfavor contactar al servicio tecnico' ,'Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar eliminar al cliente.');
+        this.sharedDataService.alert('Error al Eliminar al Cliente', 'Porfavor contactar con el servicio tecnico' ,'Ocurrió un error al intentar eliminar al cliente.');
       }
     );
   }
+  async delete_alert(cliente: any) {
+    const alert = await this.alertController.create({
+      header: 'Eliminar Producto',
+      message: '¿Está seguro de eliminar este Producto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.delete(cliente)
+          },
+        },
+      ],
+    });
 
-  agregarCliente() {
+    await alert.present();
+  }
+  cancel(cliente: any) {
+    this.editingClient[cliente.Id] = false;
+  }
+  AddClient() {
     this.navCtrl.navigateForward('/agrega-cliente').then(() => {
       this.elim.dismiss();
     });

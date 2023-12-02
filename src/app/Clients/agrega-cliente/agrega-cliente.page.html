@@ -13,27 +13,28 @@
   <!-- Formulario para agregar cliente -->
   <ion-item>
     <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="nuevoCliente.Nombre" type="text"></ion-input>
+    <ion-input [(ngModel)]="nuevoCliente.Nombre" type="text" maxlenght="100"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Domicilio</ion-label>
-    <ion-input [(ngModel)]="nuevoCliente.Domicilio" type="text"></ion-input>
+    <ion-input [(ngModel)]="nuevoCliente.Domicilio" type="text"maxlenght="200"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Correo</ion-label>
-    <ion-input [(ngModel)]="nuevoCliente.Correo" type="email"></ion-input>
+    <ion-input [(ngModel)]="nuevoCliente.Correo" type="email"maxlenght="200"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Telefono</ion-label>
-    <ion-input [(ngModel)]="nuevoCliente.Telefono" type="tel"></ion-input>
+    <ion-input [(ngModel)]="nuevoCliente.Telefono" type="tel"maxlenght="10"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Fotografia</ion-label>
-    <ion-input [(ngModel)]="nuevoCliente.Fotografia" type="text"></ion-input>
-    <!-- Muestra la URL de la fotografía si es válida -->
-    <ion-text *ngIf="esURLValida(nuevoCliente.Fotografia)">
-      Fotografía: {{ nuevoCliente.Fotografia }}
-    </ion-text>
+    <ion-label position="floating">Fotografía</ion-label>
+    <ion-input [(ngModel)]="nuevoCliente.Fotografia" type="text" maxlenght="500"></ion-input>
+  </ion-item>
+  <ion-item>
+    <div *ngIf="sharedDataService.isValidUrl(nuevoCliente.Fotografia)">
+      <img [src]="nuevoCliente.Fotografia" alt="Foto" style="width: 100%; height: auto;">
+    </div>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Periodo Cobrar</ion-label>
@@ -59,7 +60,7 @@
     </ion-select>
   </ion-item>
   <ion-item>
-    <ion-button color="primary" (click)="cancelarAgregarCliente()">Cancelar</ion-button>
-    <ion-button color="success" (click)="registrarCliente()">Registrar</ion-button>
+    <ion-button color="primary" (click)="cancel()">Cancelar</ion-button>
+    <ion-button color="success" (click)="register()">Registrar</ion-button>
   </ion-item>
 </ion-content>

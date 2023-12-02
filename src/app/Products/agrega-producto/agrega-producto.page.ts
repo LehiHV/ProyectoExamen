@@ -73,10 +73,10 @@ export class AgregaProductoPage implements OnInit {
       Fotografia: '',
     };
     this.navCtrl.navigateForward('/productos');
-    this.obtenerProductos();
+    this.ShowProducts();
   }
 
-  obtenerProductos() {
+  ShowProducts() {
     this.sharedDataService.obtenerProductos().subscribe(
       (productos) => {
         if (productos && productos.length > 0) {

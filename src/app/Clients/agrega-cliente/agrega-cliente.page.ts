@@ -31,7 +31,7 @@ export class AgregaClientePage implements OnInit {
   ngOnInit() {
   }
 
-  registrarCliente() {
+  register() {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_CLIENTES.php';
     const params = {
       comando: 'Add',
@@ -50,24 +50,20 @@ export class AgregaClientePage implements OnInit {
       (response) => {
         if (response) {
           if (response.message === 'Cliente agregado correctamente') {
-              this.mostrarAlerta('Clientes', 'Cliente Registrado');
+              this.sharedDataService.alert('Agregar Clientes','Cliente Agregado' ,'Cliente Registrado');
               this.navCtrl.navigateBack('/clientes');
           } else {
-            this.mostrarAlerta('Clientes', response.message);
+            this.sharedDataService.alert('Agregar Clientes Clientes','Problemas de Agregar Cliente', response.message);
           }
         } else {
-          this.mostrarAlerta('Error', 'Respuesta vacía del servidor');
+          this.sharedDataService.alert('Error Agregar Clientes', 'Porfavor','Respuesta vacía del servidor');
         }
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al intentar eliminar al cliente.');
+        this.sharedDataService.alert('Error Agregar Cliente',"Porfavor contactar con el servicio tecnico", 'Ocurrió un error al intentar Agregar al Cliente.');
       }
     );
-  }
-  esURLValida(url: string): boolean {
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    return urlPattern.test(url);
   }
   periodoCobrarChanged(cliente: any) {
     switch (cliente.PeriodoCobrar) {
@@ -88,7 +84,7 @@ export class AgregaClientePage implements OnInit {
         break;
     }
   }
-  cancelarAgregarCliente() {
+  cancel() {
     this.nuevoCliente = {
       Nombre: '',
       Domicilio: '',
@@ -100,10 +96,10 @@ export class AgregaClientePage implements OnInit {
       HoraCobrar: '',
     };
     this.navCtrl.navigateForward('/clientes')
-    this.obtenerClientes();
+    this.showClients();
     
   }
-  obtenerClientes() {
+  showClients() {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_CLIENTES.php';
     const params = {
       comando: 'ClientId',
@@ -116,17 +112,8 @@ export class AgregaClientePage implements OnInit {
       },
       (error) => {
         console.error('Error en la llamada HTTP:', error);
-        this.mostrarAlerta('Error', 'Ocurrió un error al obtener la lista de clientes.');
+        this.sharedDataService.alert('Error al mostrar los Clientes', 'Porfavor de contactar con el servicio tecnico' ,'Ocurrió un error al obtener la lista de clientes.');
       }
     );
-  }
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
   }
 }
