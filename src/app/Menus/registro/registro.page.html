@@ -24,6 +24,6 @@
     <ion-input [(ngModel)]="logo" maxlength="280"></ion-input>
     <ion-img *ngIf="logo && sharedDataService.isValidUrl(logo)" [src]="logo" alt="Logo Preview"></ion-img>
   </ion-item>
-  <ion-button expand="block" color="success" (click)="GotoLogin()">Registrarse</ion-button>
+  <ion-button expand="block" color="success" (click)="Register()">Registrarse</ion-button>
   <ion-button expand="block" (click)="GotoLogin()">Iniciar sesión</ion-button>
 </ion-content>
