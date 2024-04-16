@@ -26,6 +26,7 @@ export class ClientesPage implements OnInit {
 
   ngOnInit() {
     this.showClients();
+    console.log(this.sharedDataService.userData)
   }
 
   showClients() {

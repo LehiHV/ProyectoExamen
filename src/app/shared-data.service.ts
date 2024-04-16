@@ -14,7 +14,16 @@ export class SharedDataService {
     private http: HttpClient,
     public alertController: AlertController
     ) {}
-
+    validateAlphanumeric(input: string): boolean {
+      const regex = /^[a-zA-Z0-9]+$/;
+      return regex.test(input);
+    }
+  
+    // Función para validar entrada de texto limitada a valores numéricos (enteros o decimales)
+    validateNumeric(input: string): boolean {
+      const regex = /^-?\d*\.?\d+$/;
+      return regex.test(input);
+    }
   obtenerClientes() {
     const url = 'https://movilesappslehi.000webhostapp.com/Apis_5E/REST_API_CLIENTES.php';
     const params = {
