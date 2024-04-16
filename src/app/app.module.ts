@@ -4,7 +4,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { RecaptchaModule } from "ng-recaptcha";
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 

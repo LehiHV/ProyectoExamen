@@ -13,7 +13,7 @@
     <ion-label position="stacked">Constraseña</ion-label>
     <ion-input type="password" [(ngModel)]="contrasena" maxlength="8"></ion-input>
   </ion-item>
-    <re-captcha (resolved)="captcha($event)" [siteKey]="siteKey"></re-captcha>
+  <re-captcha (resolved)="captcha($event)" [siteKey]="siteKey"></re-captcha>
   <ion-button expand="block"  (click)="GotoShop()">Entrar</ion-button>
 
   <ion-button expand="block" color="success" (click)="GotoRegister()">Registrarse</ion-button>
